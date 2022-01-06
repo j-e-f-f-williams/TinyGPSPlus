@@ -131,14 +131,16 @@ public:
    bool isUpdated() const  { return updated; }
    uint32_t age() const    { return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX; }
    int32_t value()         { updated = false; return val; }
+   int32_t maxValue()         { updated = false; return maxVal; }
+   void resetMaxValue()         { updated = false; maxVal = 0; }
 
-   TinyGPSDecimal() : valid(false), updated(false), val(0)
+   TinyGPSDecimal() : valid(false), updated(false), val(0), maxVal(0)
    {}
 
 private:
    bool valid, updated;
    uint32_t lastCommitTime;
-   int32_t val, newval;
+   int32_t val, newval, maxVal;
    void commit();
    void set(const char *term);
 };
@@ -169,6 +171,7 @@ struct TinyGPSSpeed : TinyGPSDecimal
    double mph()      { return _GPS_MPH_PER_KNOT * value() / 100.0; }
    double mps()      { return _GPS_MPS_PER_KNOT * value() / 100.0; }
    double kmph()     { return _GPS_KMPH_PER_KNOT * value() / 100.0; }
+   double maxKmph()     { return _GPS_KMPH_PER_KNOT * maxValue() / 100.0; }
 };
 
 struct TinyGPSCourse : public TinyGPSDecimal
