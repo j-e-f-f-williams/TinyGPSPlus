@@ -436,6 +436,8 @@ uint8_t TinyGPSTime::centisecond()
 void TinyGPSDecimal::commit()
 {
    val = newval;
+   if( val > maxVal )
+     maxVal = val;
    lastCommitTime = millis();
    valid = updated = true;
 }
